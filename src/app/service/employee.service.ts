@@ -25,7 +25,14 @@ mutation addEmployee($name: String!,
   $salary: Float!,
   $gender: String!,
   $email: String!) {
-  newEmployee(createEmployeeInput: {name: $name, dateOfBirth: $dateOfBirth, city: $city, salary: $salary, gender: $gender, email: $email}) {
+  newEmployee(createEmployeeInput: {
+    name: $name, 
+    dateOfBirth: $dateOfBirth,
+    city: $city,
+    salary: $salary, 
+    gender: $gender, 
+    email: $email}) {
+      
     id
     name
     dateOfBirth
@@ -56,14 +63,18 @@ export class EmployeeService {
   }
 
   addEmployee(employee: Employee) {
-    return this.apollo.mutate<any>({mutation: ADD_EMPLOYEE, variables: {
-      name: employee.name,
-      dateOfBirth: employee.dateOfBirth,
-      city: employee.city,
-      salary: employee.salary,
-      gender: employee.gender,
-      email: employee.email
-    }}).pipe(
+    return this.apollo.mutate<any>({
+      mutation: ADD_EMPLOYEE, 
+      variables: {
+        name: employee.name,
+        dateOfBirth: employee.dateOfBirth,
+        city: employee.city,
+        salary: employee.salary,
+        gender: employee.gender,
+        email: employee.email
+      }
+    }
+  ).pipe(
           map(({data, loading}) => {
             this.employees$.next([...this.employees$.getValue(), data.newEmployee]);
           })
